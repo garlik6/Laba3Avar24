@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include<malloc.h>
 #include <string.h>
-
+#define rty 40
 char *getstr() {
     char *ptr = (char *) malloc(1);
     char buf[81];
@@ -24,6 +24,23 @@ char *getstr() {
     } while (n > 0);
     return ptr;
 }
+
+char *getext(){
+    char *buf = (char*) calloc(1000,1),*s = (char *) malloc(1);
+    int len=0;
+    *buf='4';
+    *s = '\0';
+        while (strcmp(buf," \n")) {
+            buf=getstr();
+            strcat(buf," \n");
+            len += strlen(buf);
+            s = (char *) realloc(s, len + 1);
+            strcat(s,buf);
+
+        }
+    return s;
+}
+
 char *skipfirstSpace(char *s)
 {
     unsigned int k = strspn(s," \t");
@@ -56,13 +73,13 @@ char *skipallSpace(char *s){
       *pointerN='\0';
       char *t;
       t=newS + strlen(newS);
-     memset(t-1,'\0',1);
-      memset(s,'\0',len);
-     // newS = (char *) realloc(newS, (strlen(newS)-1));
+    // memset(t-1,'\0',1);
+    memset(s,'\0',len);
+    // newS = (char *) realloc(newS, (strlen(newS)-1));
       return newS;
   }
 }
-char* string_80_byWidth(char * s, short int * words, char*new_string)
+char* string_rty_byWidth(char * s, short int * words, char*new_string)
 { short int* moving_words=words,spaces=0,simbols=0,len=0,i=0,j=0;
     char *moving_s=s,*__SS__="                                                                        ";
     while (*moving_words!=0){
@@ -70,10 +87,10 @@ char* string_80_byWidth(char * s, short int * words, char*new_string)
         (simbols+=*moving_words) ;
         moving_words++;
     }
-    spaces--;
+    //spaces--;
     len=simbols+spaces;
-    int new_spaces = (80-simbols)/spaces;
-    int add_new_spaces = (80-simbols)%spaces;
+    int new_spaces = (rty-simbols)/spaces;
+    int add_new_spaces = (rty-simbols)%spaces;
     strncat(new_string,moving_s,*words);
     moving_s+=(*words+1);
     strncat(new_string,__SS__,new_spaces+add_new_spaces);
@@ -85,26 +102,34 @@ char* string_80_byWidth(char * s, short int * words, char*new_string)
         if(i!=spaces-1)strncat(new_string,__SS__,new_spaces);
         words++;
     }
-    new_string+='\n';
+    strcat(new_string,"\n");
     return new_string;
 }
+
+
 char * by_width(char *s)
 {   s=skipallSpace(s);
-    short int row=0, i=0 , count=0, *words=(short int*)calloc(41,sizeof(short int));
-    char* pointer,*flag=s,*pointeR=s,*newS=(char*)calloc(strlen(s)+1,1);
-    while(strlen(pointeR)!=0) {
+    short int row=0, len=0 , i=0 , j=0, count=0 , *words=(short int*)calloc(41,sizeof(short int)) ;
+    char* pointer , *flag=s , *pointeR=s , *newS=(char*)calloc(strlen(s)+1,1);
+    while(strlen(pointeR) != 0) {
+        len=strcspn(pointeR,"\n");
 
+            if ((strpbrk(flag, " ") != 0) && (strpbrk(pointeR, " ") - flag < rty))
 
-            if ((strpbrk(flag, " ") != 0) && (strpbrk(pointeR, " ") - flag < 80))
-
-                for (i = 0; i < strlen(s) / 80; i++) {
+                for (i = 0; i < (len / rty); i++) {
 
                     pointer = pointeR;
-                    pointeR += 80;
-                    row=0;
-
+                    pointeR += rty;
                     while (*pointeR != ' ')
                         pointeR--;
+
+                    flag=strpbrk(flag,"\n");
+
+                    if (flag<pointeR)
+                        pointeR=flag;
+
+
+                    row = 0;
 
                     while (pointer != pointeR) {
                         count = 0;
@@ -121,13 +146,22 @@ char * by_width(char *s)
 
                     row++;
                     words -= row - 1;
-
-                    string_80_byWidth(flag,words,newS);
+                    string_rty_byWidth(flag, words, newS);
+                    words += row - 1;
+                    for (j = 0; j < row - 1; j++) {
+                        *words = 0;
+                        words--;
+                    }
+                    *words = 0;
 
                     pointeR++;
-                    flag=pointeR;
+                    flag = pointeR;
 
                 }
+            if(strpbrk(flag, " ") == 0) {
+
+            }
+
 
     }
     return newS;
@@ -137,7 +171,8 @@ char * by_width(char *s)
 
 
 int main() {
-  char*  s="assd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfg assd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfgassd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfgassd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfgassd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfg";
-printf("'%s'",by_width(getstr()));
+  char*  s="assd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfg assd sddia pppppppppppppppppppppgggggjsldkjfg\n assd sddiapppppppppppppppppppppgggggjsldkjfg assd sddia";
+printf("'%s'",by_width(getext()));
+
     return 0;
 }
