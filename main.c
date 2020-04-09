@@ -116,7 +116,7 @@ char * by_width(char *s)
 
             if ((strpbrk(flag, " ") != 0) && (strpbrk(pointeR, " ") - flag < rty))
 
-                for (i = 0; i < (len / rty); i++) {
+                for (i = 0; i < ((len / rty)+1); i++) {
 
                     pointer = pointeR;
                     pointeR += rty;
@@ -127,7 +127,7 @@ char * by_width(char *s)
 
                     if (flag<pointeR)
                         pointeR=flag;
-
+                    flag= pointer
 
                     row = 0;
 
@@ -150,29 +150,29 @@ char * by_width(char *s)
                     words += row - 1;
                     for (j = 0; j < row - 1; j++) {
                         *words = 0;
-                        words--;
-                    }
-                    *words = 0;
+words--;
+}
+*words = 0;
 
-                    pointeR++;
-                    flag = pointeR;
+pointeR++;
+flag = pointeR;
 
-                }
-            if(strpbrk(flag, " ") == 0) {
+}
+if(strpbrk(flag, " ") == 0) {
 
-            }
+}
 
 
-    }
-    return newS;
+}
+return newS;
 }
 
 
 
 
 int main() {
-  char*  s="assd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfg assd sddia pppppppppppppppppppppgggggjsldkjfg\n assd sddiapppppppppppppppppppppgggggjsldkjfg assd sddia";
-printf("'%s'",by_width(getext()));
+    char*  s="assd sddоa sdf lkgg gggggggg ggggggggggggggggggggg gpppppppp ppppppppppppppp pppppppp pppppppppppppppppppppgggggjsldkjfg assd sddia pppppppppppppppppppppgggggjsldkjfg\n assd sddiapppppppppppppppppppppgggggjsldkjfg assd sddia";
+    printf("'%s'",by_width(getext()));
 
     return 0;
 }
