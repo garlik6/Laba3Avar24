@@ -26,6 +26,7 @@ char *getstr() {
 }
 
 char *getext(){
+    printf("Enter your Text\n");
     char *buf = (char*) malloc(1),*s = (char *) malloc(1);
     int len=0;
     *buf='\0';
